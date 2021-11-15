@@ -22,11 +22,6 @@
 </script>
 </head>
 
-- [ ] add an article
+essay
 
-
-bbb$a_b$aaa
-
-$$
-dfdfdf_3
-$$
+- [GlobalPointer](globalpointer.md)
