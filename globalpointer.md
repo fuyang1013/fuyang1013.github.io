@@ -1,4 +1,4 @@
-<head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
@@ -28,7 +28,6 @@
         });
     });
 </script>
-</head>
 
 <div class="container">
   
