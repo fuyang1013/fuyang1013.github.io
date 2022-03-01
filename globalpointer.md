@@ -107,7 +107,7 @@ $$
 
 ||MSRA<br>*dev*|Cluener|Weibo|
 |-|-|-|-|
-|Bert|95.66|*TBD*|*TBD*|
+|Bert|95.92|*TBD*|*TBD*|
 |Bert-GlobalPointer|**96.99**|*TBD*|*TBD*|
 
 ---
