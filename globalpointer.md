@@ -22,6 +22,8 @@
 
 GlobalPointer是一种基于span分类的解码方法。对于任意句子，GlobalPointer构造一个上三角矩阵来遍历所有有效的span，如下图所示，每一个格子对应一个entity span.
 
+![](gp_model.png)
+
 暂时假设实体类别只有一个，假设经过encoder（lstm或者bert）后，位置$i$和$j$处的representation为$h_i$和$h_j$，经过全连接层分别得到二者的query向量$q_i$和key向量$k_i$：
 
 $$
@@ -101,13 +103,13 @@ $$
 
 ## 实验
 
-用PyTorch复现GlobalPointer[^1]，代码地址为https://github.com/fuyang1013/NER/blob/main/bert_globalpointer/gp.py
+用PyTorch复现GlobalPointer[^1]，代码地址见[GitHub](https://github.com/fuyang1013/NER/blob/main/bert_globalpointer/gp.py).我们在多个数据集上验证GlobalPointer的成绩，结果如下：
 
-在多个数据集上验证GlobalPointer的成绩，结果如下：
-
-||MSRA<br>dev|Cluener|Weibo|
+||MSRA<br>*dev*|Cluener|Weibo|
 |-|-|-|-|
-|Bert|*TBD*|*TBD*|*TBD*|
-|Bert-GlobalPointer|96.99|*TBD*|*TBD*|
+|Bert|95.66|*TBD*|*TBD*|
+|Bert-GlobalPointer|**96.99**|*TBD*|*TBD*|
+
+---
 
 [^1]: 为了保证复现的正确性，我们在相同输入下对比了两个版本的结果，不考虑Tensorflow默认浮点类型为Float64而PyTorch默认浮点类型为Float32带来的影响，二者结果一致。
