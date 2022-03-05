@@ -103,11 +103,12 @@ $$
 
 ## 实验
 
-用PyTorch复现GlobalPointer[^1]，代码地址见[GitHub](https://github.com/fuyang1013/NER/blob/main/bert_globalpointer/gp.py).我们在多个数据集上验证GlobalPointer的成绩，结果如下：
+用PyTorch复现GlobalPointer，在多个数据集上验证GlobalPointer的成绩，结果如下：
 
 ||MSRA<br>*dev*|Cluener|Weibo|
 |-|-|-|-|
 |Bert|95.92|*TBD*|*TBD*|
+|Bert-CRF|||
 |Bert-GlobalPointer|**96.99**|*TBD*|*TBD*|
 
 ---
