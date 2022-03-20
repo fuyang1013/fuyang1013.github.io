@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="refresh" content="1"> -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>矩阵</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+			integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+		<style>
+			.container {
+				background-color: #F0EFE2;
+			}
+			h1, h3{
+				color: #65645F;
+			}
+
+			body {
+				font-family: "Source Code Pro", Consolas, monospace;
+				font-size: 14px;
+				background-color: #E1E0C7;
+			}
+
+			blockquote {
+				border-left: solid #65645F 5px;
+				background-color: #E1E0C7;
+				font-size: 12px;
+			}
+			mark{
+				background-color: rgb(255 246 122 / 80%);
+			}
+			hr{
+				border-color: #65645F
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="text-center">
+				<h1>矩阵论</h1><br>
+			</div>
+			<!-- <blockquote>衡量成绩和能力的标准出了问题，如果仅仅只看成绩，有人会绞尽脑汁，挖疮补肉，这样必然会带来畸形成长，而良性发展看似不是最优，其背后还有一些其他的标准，来形成良性发展。</blockquote> -->
+			<p>线性代数是大学本科课程，而矩阵分析则是研究生课程，二者循序递进，不断深入研究矩阵相关的数学理论知识。但国内教材编排过于乏味，学习起来非常吃力。本文试图以自顶向下的方式来组织两门课程零散的知识点，并加以通俗的语言讲解，使得学习过程更具趣味性。废话不多说，我们进入正题。</p>
+			<br>
+			<h3 class="text-center">第一章 初探矩阵的本质</h3>
+			<p>矩阵论是围绕着<strong>矩阵（Matrix）</strong>展开的一系列数学理论研究，而矩阵到底是什么，又从何而来，能帮助我们做什么？这一切，都还要从线性方程组讲起。</p>
+			<p>线性方程组的求解中学生都会。对于一个包含$n$个未知数、$m$个方程的线性方程组，如下所示：</p>
+			<p>
+				$$
+				\begin{cases}
+				a_{11} x_1 + a_{12} x_2 + \cdots + a_{1n} x_n = b_1 \\
+				a_{21} x_1 + a_{22} x_2 + \cdots + a_{2n} x_n = b_2 \\
+				\cdots \\
+				a_{m1} x_1 + a_{m2} x_2 + \cdots + a_{mn} x_n = b_n
+				\end{cases}
+				$$
+			</p>
+			<p>中学时期，我们通常选择<strong>高斯消元法</strong>求解，即每次都选择一个未知数，然后用其他未知数替换当前未知数，这样便可以在消去一个未知数的同时消去一个方程；重复该化简步骤直至剩下最后一个一元线性方程，此时只要计算出最后一个未知数的解，整个方程组的解也就算出来了。然而中学生在求解多元线性方程组的时候，一开始为了便于计算，题目会默认方程组要么无解，要么有唯一解。但是现在，我们想要窥其全貌，并且用一种更加高效的方法求解。便可使用矩阵这个工具。假设有如下的线性方程组：
+			</p>
+			
+			<p>根据消元法可知，方程组的解只和$a_{ij}$、$b_k$有关，不妨将它们全部取出来，便可得到系数矩阵和增广矩阵：</p>
+			<p>
+				$$
+				系数矩阵
+				\begin{pmatrix}
+				a_{11} & a_{12} & \cdots & a_{1n} \\
+				a_{21} & a_{22} & \cdots & a_{2n} \\
+				\vdots & \vdots & \ddots & \vdots \\
+				a_{m1} & a_{m2} & \cdots & a_{mn} \\
+				\end{pmatrix}
+				$$
+			</p>
+			<p>
+				$$
+				增广矩阵
+				\begin{pmatrix}
+				a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
+				a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
+				\vdots & \vdots & \ddots & \vdots & \vdots\\
+				a_{m1} & a_{m2} & \cdots & a_{mn} & b_m\\
+				\end{pmatrix}\\
+				$$
+			</p>
+			<p>我们这么做的目的是希望<strong>通过矩阵的计算我们可以快速得到线性方程组的解</strong>。我们可以尝试给矩阵下个不是很严谨的定义：<strong>矩阵就是在行上和列上都有序的二维数表</strong>。这个定义可能听起来有点怪怪的，因为“数表”这个词不像是一个数学术语，倒是像一个计算机术语，对应某种数据结构（数据组织+数据管理），接下来，我们从空间的角度去定义、理解矩阵。</p>
+			<p>一提到空间，就不得不提笛卡尔的坐标系，它可以帮助我们直观地去理解、表示空间中的点：</p>
+			<ul>
+				<li>如果要表示一维空间（也就是一条线）中的一个点，我们只用一个数字即可，它可正可负，可以是实数（无理数+有理数），也可以扩展至复数（实部+虚部），比如$-1$、$3.1415926$、$5+2i$等等；我们称这种数学表示为标量（Scalar）；</li>
+				<li>如果要表示二维空间（也就是一个平面）中的一个点，我们需要两个数字，一个数字表示横坐标，另一个数字表示纵坐标，每个数字都是标量，比如$[1, -1]^{\top}$；我们称这种数学表示<strong>向量（Vector）</strong>. 和标量相比，<strong>向量是有方向的</strong>，因为每个坐标轴上的取值会惟一确定它的方向（从原点出发指向该点）；</li>
+				<li>如果要表示三维甚至更高维空间（也就是超平面）中的一个点，我们需要三个甚至更多的数字，每个数字对应一个空间轴上的坐标，他们共同决定这个点的方向，但在数学表示上，仍然用向量表示就够了。比如$[1, 2, 3, 4]^{\top}$；</li>
+			</ul>
+			<p>通过上述例子我们发现，随着空间从一维上升到高维，点的数学表示形式也从标量上升到了向量。但如果仅仅是为了表示空间中的点，引入向量就已经“够用”了，那么矩阵的作用是什么呢？我们不妨来看看矩阵和向量的计算，看完后答案便一目了然。</p>
+			<p>首先，向量和数字之间可以进行加、减、乘、除，其本质就是向量中每个元素依次和这个数字进行加、减、乘、除，也称<strong>元素级计算</strong>；向量也可以和向量进行加减，这要求两个向量的维度相同，然后进行一一对应的元素级计算。</p>
+			<p>向量和向量的乘法有两种，一种是<strong>点乘（dot product）</strong>，运算结果为两个向量的<strong>内积</strong>，假设向量$a=[3, 0]^{\top}$，向量$b=[1, 2]^{\top}$，则向量$a$点乘向量$b$的计算过程为：</p>
+			<p>
+				$$
+				a \cdot b = 3 \times 1 + 0 \times 2 = 3 \\
+				or \\
+				a \cdot b = \|a\|\|b\|\cdot \cos{\theta} = \sqrt{3^2 + 0^2} \cdot \sqrt{1^2 + 2^2} \cdot \frac{1}{\sqrt{5}} = 3
+				$$
+			</p>
+			<p>$\theta$为$a$、$b$形成的小于180度的夹角。以上两种计算等价，可以看到，点乘的结果为标量，<strong>在数值上等于一个向量的长度乘上另一个向量在其上的投影长度</strong>。</p>
+			<p>向量和向量的另外一种乘法为<strong>叉乘（cross product）</strong>，运算结果为两个向量的<strong>外积</strong>，向量$a$叉乘向量$b$的计算过程为：</p>
+			<p>
+				$$
+				\| a \times b \| = \| a \| \| b \| sin \theta = 3 \times \sqrt{5} \times \frac{2}{\sqrt{5}} = 6
+				$$
+			</p>
+			<p>叉乘的结果为向量，它<strong>在数值上等于两个向量组成的四边形的面积</strong>，方向由右手法则确定（右手握拳、大拇指朝上，四指从向量$a$出发、沿着小于180度的夹角的方向，此时大拇指所指方向即为外积方向）。</p>
+			<blockquote>内积和外积暂不属于理解矩阵的重点，在此不做过多描述，有兴趣的读者可以自行查阅资料。</blockquote>
+			<p>接下来看矩阵相关的计算，矩阵和数字之间也是可以进行加减乘除的，本质是矩阵的元素级计算；矩阵和矩阵之间可以进行加法、减法、乘法运算，其中加法和减法是元素级运算，乘法则是特殊的“矩阵乘法”，以$m$行$n$列的矩阵$A_{m \times n}$和$n$行$t$列的矩阵$B_{n \times t}$相乘为例，运算结果为$m$行$t$列的矩阵$C$，其第$i$行第$j$列元素$C_{ij}$的计算过程为：</p>
+			<p>
+				$$
+					C_{ij} = \sum_{k=1}^{t} A_{ik}B_{kj}
+				$$
+			</p>
+			<p>可以发现，<strong>矩阵相乘不满足对称性，前一个向量的列数必须等于后一个向量的行数</strong>。有了矩阵乘法的铺垫，再来看矩阵和向量之间的乘法便可以照葫芦画瓢了，毕竟向量可以看成是单列或者单行的矩阵。举例如下：</p>
+			<p>
+				$$
+				\begin{pmatrix}
+				3 & 0\\
+				0 & 2
+				\end{pmatrix}
+				\begin{pmatrix}
+				1\\
+				1
+				\end{pmatrix}
+				=
+				\begin{pmatrix}
+				3\\
+				2
+				\end{pmatrix}
+				$$
+			</p>
+			<p>可以发现，矩阵乘上一个向量，得到的还是一个向量，维度和原向量保持一致。其实推广到一般情况，情况也是这样的。也就是说，矩阵乘上向量（抑或是向量乘上矩阵），最终都会得到一个新的向量。<strong>如果我们把向量看成是空间中的点，那么矩阵存在的意义就是将其映射到另一个点上</strong>。站在空间的角度，我们可以给矩阵下一个新的定义：<strong>矩阵的本质就是空间中向量的线性变换</strong>。如果我们把上述示例中的原向量和结果向量在平面直角坐标系画出来，似乎并不能看出什么名堂，但是如果保持向量不变，将左边的矩阵做一个更改：</p>
+			<p>
+				$$
+					\begin{pmatrix}
+					1 & 0\\
+					0 & 1
+					\end{pmatrix}
+					\begin{pmatrix}
+					1\\
+					1
+					\end{pmatrix}
+					=
+					\begin{pmatrix}
+					1\\
+					1
+					\end{pmatrix}
+				$$
+			</p>
+			<p>此时原向量和结果向量竟然一模一样！我们称上式中左边的矩阵为<strong>单位阵</strong>。它和一维空间中的1类似，单位阵乘上任何一个向量都得到向量本身。</p>
+			<p>我们再对矩阵做更换：</p>
+			<p>
+				$$
+				\begin{pmatrix}
+				2 & 1\\
+				1 & 2
+				\end{pmatrix}
+				\begin{pmatrix}
+				1\\
+				1
+				\end{pmatrix}
+				=
+				\begin{pmatrix}
+				3\\
+				3
+				\end{pmatrix}
+				$$
+			</p>
+			<p>可以发现，现在的矩阵只改变了向量的长度，而未改变其方向，换言之，该矩阵对向量进行了缩放。</p>
+			<p>至此，我们可以从空间的角度去理解矩阵：矩阵作用在向量（也就是高维空间中的点）上的本质是对向量做线性变换。</p>
+			<p>矩阵的这两种理解方式，对我们学习矩阵论是至关重要的。以本章开头的多元线性方程组为例，如果我们从空间的角度去看，可将该方程组转成矩阵的形式：</p>
+			<p>
+				$$
+				\begin{pmatrix}
+				a_{11} & a_{12} & \cdots & a_{1n} \\
+				a_{21} & a_{22} & \cdots & a_{2n} \\
+				\vdots & \vdots & \ddots & \vdots \\
+				a_{m1} & a_{m2} & \cdots & a_{mn} \\
+				\end{pmatrix}
+				\begin{pmatrix}
+				x_1\\
+				x_2\\
+				\vdots\\
+				x_n
+				\end{pmatrix}=
+				\begin{pmatrix}
+				b_1\\
+				b_2\\
+				\vdots\\
+				b_n
+				\end{pmatrix}
+				$$
+			</p>
+			<p>这便得到多元线性方程组的等价形式：$Ax=b$，此时我们要求的就是经过矩阵$A$变换后可以得到$b$的向量$x=[x_1, x_2, ..., x_n]^{\top}$. 这其实也是一种巧妙的数形结合。</p>
+			<br>
+			<h3 class="text-center">第二章 通过矩阵计算求解方程组</h3>
+			<p>让我们重新回到第一章开头的多元线性方程组的问题上，我们知道多元线性方程组的解有三种情况：无解、有唯一解、有无穷解三种情况。使用消元法解方程时，我们的经验是，如果方程数$m$少于未知数数$n$，方程一定有解，且有无穷多个解；如果$m=n$，只要没有重复方程（两个方程化简后的最简形式相同），方程组有唯一解；如果$m$>$n$，如果没有重复方程，方程组无解。即使我们不知道多元线性方程组可以转化成矩阵形式求解，但是我们当时的结论在矩阵形式下依然是成立的。这里所说的“不重复的方程”的个数在矩阵形式下称为增广矩阵的<strong>秩（Rank）</strong>。</p>
+			<p><strong>计算矩阵的秩可以帮助判断线性方程组解的情况</strong>。一种是通过<strong>初等行变换</strong>将矩阵化成<strong>行最简阶梯矩阵</strong>，它可以准确计算出矩阵的秩是多少；另一种是计算矩阵对应的行列式是否为0，但它只能判断矩阵是否满秩，如果行列式为0，矩阵不满秩，此时称矩阵为<strong>奇异矩阵</strong>；否则，矩阵满秩，称矩阵为<strong>非奇异矩阵</strong>。</p>
+			<blockquote>为了不伤及主线，我们不打算在这里介绍矩阵的初等行变换，但这并不代表初等行变换不重要，相反地，初等行变换是非常特殊的矩阵变换操作，如果矩阵A能够通过初等行变换得到B，那么我们称A和B是相似的；另外，初等行变换还有一个很重要的用处，便是求逆，这个我们将会在第三章展开描述。</blockquote>
+			<p>接下来，我们通过矩阵运算来求解方程组，为了简化问题，我们先求解非齐次线性方程组$Ax=b$对应的齐次线性方程组$Ax=0$的解，二者的区别在于：前者的解的情况和增广矩阵$(A|b)$相关，而后者只和系数矩阵$A$相关。齐次方程组的求解分两种情况：</p>
+			<ol>
+				<li><p>第一种情况是矩阵$A$满秩，此时$A$为<strong>方阵（行数和列数相同）</strong>，方程组有唯一解且为$x$为零向量。我们可以把矩阵看成是一个向量组$A=[a_1, a_2, ..., a_n]^{\top}$（每个向量对应为原矩阵的一行），那么$Ax=0$可以拆解成$a_1 x + a_2 x + ... + a_n x = 0$，因为$A$满秩，那么这些向量组都是线性无关的（任意一个向量都不能表示为其他向量的线性组合），那么$Ax=0$只能有$x=0$，这里的0表示零向量。</p></li>
+				<li>
+					<p>第二种情况是矩阵$A$不满秩，此时将$A$化成行最简阵，举例如下：</p>
+					<p>
+						$$
+						A = 
+						\begin{pmatrix}
+						1 & 2 & 2 & 1\\
+						2 & 1 & -2 & -2\\
+						1 & -1 & -4 & -3
+						\end{pmatrix} 
+						\sim
+						\begin{pmatrix}
+						1 & 0 & -2 & -\frac{5}{3}\\
+						0 & 1 & 2 & \frac{4}{3}\\
+						0 & 0 & 0 & 0
+						\end{pmatrix}
+						$$
+					</p>
+					<p>于是得到</p>
+					<p>
+						$$
+						\begin{cases}
+						x_1 = 2x_3 + \frac{5}{3}x_4\\
+						x_2 = -2x_3 - \frac{4}{3}x_4
+						\end{cases} \tag{*}
+						$$
+					</p>
+					<p>直接令$x_3=c_1, x_4=c_2$可得</p>
+					<p>
+						$$
+							\begin{pmatrix}
+							x_1 \\
+							x_2 \\
+							x_3 \\
+							x_4
+							\end{pmatrix}
+							=
+							\begin{pmatrix}
+							2c_1 + \frac{5}{3}c_2 \\
+							-2c_1-\frac{4}{3}c_2 \\
+							c_1 \\
+							c_2
+							\end{pmatrix}
+							=
+							c_1
+							\begin{pmatrix}
+							2 \\
+							-2 \\
+							1 \\
+							0
+							\end{pmatrix}
+							+
+							c_2
+							\begin{pmatrix}
+							\frac{5}{3} \\
+							- \frac{4}{3} \\
+							0 \\
+							1
+							\end{pmatrix}
+						$$
+					</p>
+					<p>其中$c_1, c_2$为任意实数。</p>
+					<p>当得到(*)式时，一个更快捷的方式是，直接令$\begin{pmatrix}x_3\\x_4\end{pmatrix}$等于$\begin{pmatrix}1\\0\end{pmatrix}$和$\begin{pmatrix}0\\1\end{pmatrix}$,这样可以得到$\begin{pmatrix}x_1\\x_2\end{pmatrix}$分别等于$\begin{pmatrix}2\\-2\end{pmatrix}$和$\begin{pmatrix}\frac{5}{3}\\-\frac{4}{3}\end{pmatrix}$，对应两个基础解系$\xi_1$和$\xi_2$，而通解则为$c_1 \xi_1 + c_2 \xi_2$.</p>
+				</li>
+			</ol>
+			<p>接下来讨论非齐次方程组的求解，比较系数矩阵$A$和增广矩阵$(A|b)$的秩：</p>
+			<ul>
+				<li><p>如果$R(A) &lt; R(A|b)$，方程组无解；</p></li>
+				<li><p>如果$R(A) = R(A|b)$，方程组有唯一解；</p></li>
+				<li><p>如果$R(A) &gt; R(A|b)$，方程组有无限多个解。</p></li>
+			</ul>
+			<p>并且有结论：<strong>非齐次方程的通解 = 对应的齐次方程的通解+非齐次方程的一个特解</strong>。</p>
+			<p>这里只考虑增广矩阵不满秩的情况，假设增广矩阵为：</p>
+			<p>
+				$$
+				\begin{pmatrix}
+				1 & -1 & -1 & 1 & 0 \\
+				1 & -1 & 1 & -3 & 1 \\
+				1 & -1 & -2 & 3 & -2 \\
+				\end{pmatrix}
+				\sim
+				\begin{pmatrix}
+				1 & -1 & 0 & -1 & \frac{1}{2} \\
+				0 & 0 & 1 & -2 & \frac{1}{2} \\
+				0 & 0 & 0 & 0 & 0 \\
+				\end{pmatrix}
+				$$
+			</p>
+			<p>此时系数矩阵和增光矩阵的秩都为2，且有</p>
+			<p>
+				$$
+				\begin{cases}
+				x_1= x_2 + x_4 + \frac{1}{2}\\
+				x_3 = 2x_4 + \frac{1}{2}
+				\end{cases}
+				$$
+			</p>
+			<p>此时取$x_2=x_4=0$，得到一个特解：</p>
+			<p>
+				$$
+				\eta^* = 
+				\begin{pmatrix}
+				\frac{1}{2}  \\
+				0  \\
+				\frac{1}{2}  \\
+				0
+				\end{pmatrix}
+				$$
+			</p>
+			<p>在对应的齐次方程组里，取$\begin{pmatrix}x_2\\x_4\end{pmatrix}$等于$\begin{pmatrix}1\\0\end{pmatrix}$和$\begin{pmatrix}0\\1\end{pmatrix}$，得基础解系：</p>
+			<p>
+				$$
+				\xi_1 =
+				\begin{pmatrix}
+				1 \\
+				1 \\
+				0 \\ 
+				0 
+				\end{pmatrix}, \xi_2 =
+				\begin{pmatrix}
+				1 \\
+				0 \\
+				2 \\ 
+				1 
+				\end{pmatrix}
+				$$
+			</p>
+			<p>将基础解系和特解加在一起得到最终通解：</p>
+			<p>
+				$$
+				\begin{pmatrix}
+				x_1 \\
+				x_2 \\
+				x_3 \\ 
+				x_4 
+				\end{pmatrix}
+				=
+				c_1
+				\begin{pmatrix}
+				1 \\
+				1 \\
+				0 \\ 
+				0 
+				\end{pmatrix}+c_2
+				\begin{pmatrix}
+				1 \\
+				0 \\
+				2 \\ 
+				1 
+				\end{pmatrix}+
+				\begin{pmatrix}
+				\frac{1}{2}  \\
+				0  \\
+				\frac{1}{2}  \\
+				0
+				\end{pmatrix}, (c_1, c_2 \in \Bbb{R})
+				$$
+			</p>
+			<p>以上，便是通过矩阵计算来求解线性方程组的全过程：首先通过秩来判断解的情况，然后通过矩阵的初等变换来实现等价消元的化简，最后通过构建基础解系，得到方程组的通解。</p>
+			<p>到此为止，我们利用矩阵求解了齐次/非齐次线性方程组，它是我们引出矩阵这个概念的来源，虽然这个问题已经得到求解，但是矩阵的用处并未到此结束。在计算矩阵的秩时，我们将矩阵看成是向量组，<strong>并且向量组中的向量彼此线性无关是矩阵满秩的充要条件</strong>。当满秩的矩阵是方阵时，它将擦出更绚丽的火花，此时的矩阵不再仅仅是一个普通的线性变换，而是上升到了向量空间变换！而如果我们将矩阵分解，便会发现任意矩阵所表示的线性变换的深层奥秘。</p>
+			</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+		integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous">
+	</script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+		integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous">
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			renderMathInElement(document.body, {
+				delimiters: [{
+						left: "$$",
+						right: "$$",
+						display: true
+					},
+					{
+						left: "$",
+						right: "$",
+						display: false
+					},
+					{
+						left: "\\(",
+						right: "\\)",
+						display: false
+					},
+					{
+						left: "\\[",
+						right: "\\]",
+						display: true
+					}
+				]
+			});
+		});
+		window.reload(3);
+	</script>
+</html>
