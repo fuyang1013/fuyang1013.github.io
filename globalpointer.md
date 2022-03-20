@@ -77,7 +77,7 @@ $$
 
 ## 损失函数的设计
 
-为方便表示，上文一直假设实体类别只有一个。对于$m$个实体类别，句子统一长度为$L$，每个实体类别对应一个头（head），即GlobalPointer的输出张量的shape为$[batch\_size, m, L, L]$. GlobalPointer的损失函数和circle loss类似，对于span分类，可得到如下的损失函数：
+为方便表示，上文一直假设实体类别只有一个。对于$m$个实体类别，句子统一长度为$L$，每个实体类别对应一个头（head），即GlobalPointer的输出张量的shape为$[batch\\_size, m, L, L]$. GlobalPointer的损失函数和circle loss类似，对于span分类，可得到如下的损失函数：
 
 $$
 \begin{aligned}\log \bigg(1 + \sum \limits_{i\in\Omega_{neg},j \in \Omega_{pos}} e^{s_i-s_j}\bigg)=\log \bigg(1 + \sum \limits_{i\in \Omega_{neg}} e^{s_i}\sum \limits_{j\in \Omega_{pos}} e^{-s_j}\bigg) \end{aligned}
@@ -105,12 +105,14 @@ $$
 
 用PyTorch复现GlobalPointer，在多个数据集上验证GlobalPointer的成绩，结果如下：
 
-||MSRA<br>*dev*|Cluener|Weibo|
+||MSRA[^2]<br>*dev*|Cluener|Weibo|
 |-|-|-|-|
-|Bert|95.92|*TBD*|*TBD*|
-|Bert-CRF|||
+|Bert|96.12|*TBD*|*TBD*|
 |Bert-GlobalPointer|**96.99**|*TBD*|*TBD*|
+
+MSRA NER数据集上，设置train_max_len=128, eval_max_len=256
 
 ---
 
 [^1]: 为了保证复现的正确性，我们在相同输入下对比了两个版本的结果，不考虑Tensorflow默认浮点类型为Float64而PyTorch默认浮点类型为Float32带来的影响，二者结果一致。
+[^2]: msra数据集的训练集长度都在128以内，但是评测集会大于256，所以如果在128内评测，可以达到95，但是在256的范围内会降低至94，如果不限制长度，会降至87
