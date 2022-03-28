@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="refresh" content="1"> -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>动态规划</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+			integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+		<style>
+			.container {
+				background-color: #F0EFE2;
+			}
+			h1, h3{
+				color: #65645F;
+			}
+
+			body {
+				font-family: "Source Code Pro", Consolas, monospace;
+				font-size: 14px;
+				background-color: #E1E0C7;
+			}
+
+			pre, blockquote {
+				border-left: solid #65645F 5px;
+				background-color: #E1E0C7;
+				font-size: 12px;
+			}
+			mark{
+				background-color: rgb(255 246 122 / 80%);
+			}
+			hr{
+				border-color: #65645F
+			}
+		</style>
+	</head>
+    <body>
+        <div class="container">
+            <h1 class="text-center">动态规划</h1>
+            <hr>
+            <p>动态规划有两个特性：子问题重叠，最优子结构。</p>
+            <h3 class="text-center">力扣221 最大正方形 [medium]</h3>
+            <h4>题目信息</h4>
+            <blockquote>
+                <p>在一个由 '0' 和 '1' 组成的二维矩阵内，找到只包含 '1' 的最大正方形，并返回其面积。</p>
+            </blockquote>
+            <h4>样例</h4>
+            <blockquote>
+                <p><img src="images/likou-221.png" width="200"></p>
+                <p>输入：matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+</p>
+                <p>输出: 1</p>
+            </blockquote>
+            <h4>思路</h4>
+            <p>一开始认为要沿着副对角线，然后寻找matrix[i][j]和matrix[i-1][j-1]之间的关系。后来发现，一行行扫描即可。但是这里的转移方程，想了三次才成功，正解为:</p>
+            <p>$$
+                dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1])+1
+                $$
+            </p>
+            <h4>代码</h4>
+            <pre>class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        rows = len(matrix)
+        cols = len(matrix[0])
+        dp = [[0]*cols for _ in range(rows)]
+        for i in range(rows):
+            for j in range(cols):
+                if i == 0 or j == 0:
+                    dp[i][j] = int(matrix[i][j])
+                else:
+                    if matrix[i][j] == '1':
+                        dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+                    else:
+                        dp[i][j] = 0
+        max_edge = max([max(x) for x in dp])
+        return max_edge**2</pre>
+            <br>
+        </div>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+		integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous">
+	</script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+		integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous">
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			renderMathInElement(document.body, {
+				delimiters: [{
+						left: "$$",
+						right: "$$",
+						display: true
+					},
+					{
+						left: "$",
+						right: "$",
+						display: false
+					},
+					{
+						left: "\\(",
+						right: "\\)",
+						display: false
+					},
+					{
+						left: "\\[",
+						right: "\\]",
+						display: true
+					}
+				]
+			});
+		});
+	</script>
+</html>

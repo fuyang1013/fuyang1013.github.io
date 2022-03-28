@@ -7,6 +7,7 @@ NLP
 Algoritm
 
 - [贪心算法](greedy_algorithm.html)
+- [动态规划](dynamic_programming.html)
 
 Math
 
