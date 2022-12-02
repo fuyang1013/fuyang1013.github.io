@@ -14,11 +14,11 @@
 
 NLU任务的目的是在输入文本的基础上对词、短语、句子、篇章的属性做预测，比如情绪分析、命名实体识别和文本推理。从知识资源的维度可将知识增强NLU大致分为两类，一类是结构化知识（如知识图谱），另一类是非结构化知识（如文本语料）。
 
-将结构化知识融入到NLU的工作又可分为两种，一种是基于概念或者实体嵌入的显式方法[^1]，一种是通过实体遮掩预测的隐式方法。
+将结构化知识融入到NLU的工作又可分为两种，一种是基于概念或者实体嵌入的显式方法[^zhang2019][^peters2019][^liu2020][^yu2020a][^zeng2020]，一种是通过实体遮掩预测的隐式方法[^sun2019][^shen2020][^xiong2020][^wang2019]。
 
-比如，ERNIE使用TransE在知识图谱上显式地预训练实体嵌入，而EAE将其作为模型参数来学习。KEPLER基于描述文本使用预训练模型来隐式地计算实体嵌入。
+比如，ERNIE[^zhang2019]使用TransE在知识图谱上显式地预训练实体嵌入，而EAE[^fevry2020]将其作为模型参数来学习。KEPLER[^wang2019]基于描述文本使用预训练模型来隐式地计算实体嵌入。
 
-最近，一些工作提出联合训练知识图谱模块和语言模型。比如JAKET提出使用知识模块来生成文本中实体的嵌入，而用语言模型来生成知识图谱中实体和关系的上下文感知的初始嵌入。Yu等人和Xu等人提出使用词典描述作为额外的知识源 来做NLU和常识推理任务。
+最近，一些工作提出联合训练知识图谱模块和语言模型。比如JAKET提出使用知识模块来生成文本中实体的嵌入，而用语言模型来生成知识图谱中实体和关系的上下文感知的初始嵌入。Yu等人[^yu2020c]和Xu等人[^xu2021]提出使用词典描述作为额外的知识源 来做NLU和常识推理任务。
 
 将非结构化知识融入NLU模型，一般需要一个文本检索模块来从知识语料中获取相关文本。使用非结构化知识有很多方法，尤其是对于开放领域的问答任务。比如Lee第一个通过ICT(inverse cloze task)来训练retriever，然后联合训练retriever和reader用于开放领域的问答；DPR通过监督学习训练retriever在开放领域问答上取得了更好的成绩；REALM预测遮掩的包含重要实体的span来联合预训练reader和retriever；KG-FiD提出在检索阶段通过检索文章之间的结构化关系来过滤噪声文章。
 
@@ -50,7 +50,10 @@ NLG的目标是从各种形式的语言或非语言数据（如文本数据、�
 
 5 总结文章列表
 
-
+- 知识增强NLU：[^zhang2019][^peters2019][^liu2020][^ding2019][^lv2020][^yu2022b]
+- 知识增强NLG：[^zhou2018][^zhang2020a][^ji2020b][^lewis2020][^wang2021]
+- 常识和推理：[^lin2019][^ma2019][^fan2020][^liu2021b][^wang2021][^guan2019][^guan2020b]
+- 相关综述：[^yu2020b][^yang2021][^zhang2022][^wei2021]
 
 6 代表人物
 
@@ -61,4 +64,33 @@ NLG的目标是从各种形式的语言或非语言数据（如文本数据、�
 - Meng Jiang
 - Wenhao Yu
 
-[^1]: http
+[^zhang2022]: A survey of multi-task learning in natural language processing: Regarding task relatedness and training methods
+[^wei2021]: Knowledge enhanced pretrained language models: A compreshensive survey
+[^yang2021]:  A survey of knowledge enhanced pre-trained models
+[^wang2021]: Retrieval enhanced model for commonsense generation
+[^xu2021]: Fusing context into knowledge graph for commonsense reasoning
+[^liu2021b]: Kg-bart: Knowledge graph-augmented bart for generative commonsense reasoning
+[^yu2022b]: Jaket: Joint pre-training of knowledge graph and language understanding
+[^fan2020]: An enhanced knowledge injection model for commonsense generation
+[^guan2020b]: A knowledge-enhanced pretraining model for commonsense story generation
+[^yu2020b]: A survey of knowledge-enhanced text generation
+[^yu2020a]: Identifying referential intention with heterogeneous contexts
+[^lewis2020]: Retrieval-augmented generation for knowledge-intensive NLP tasks
+[^ji2020b]: Language generation with multi-hop reasoning on commonsense knowledge graph
+[^lv2020]: Graph-based reasoning over heterogeneous external knowledge for commonsense question answering
+[^fevry2020]: Entities as experts: Sparse memory access with entity supervision
+[^xiong2020]: Pretrained encyclopedia: Weakly supervised knowledge-pretrained language model
+[^shen2020]: Exploiting structured knowledge in text via graph-guided representation learning
+[^zeng2020]: Tri-train: Automatic pre-fine tuning between pre-training and finetuning for sciner
+[^yu2020c]: Dict-bert: Enhancing language model pre-training with dictionary
+[^zhang2020a]: Grounded conversation generation as guided traverses in commonsense knowledge graphs
+[^liu2020]: K-BERT: enabling language representation with knowledge graph
+[^zhang2019]: ERNIE: Enhanced language representation with informative entities
+[^sun2019]: Ernie: Enhanced representation through knowledge integration
+[^wang2019]: Kepler: A unified model for knowledge embedding and pretrained language representation
+[^peters2019]: Knowledge enhanced contextual word representations
+[^guan2019]: Story ending generation with incremental encoding and commonsense knowledge
+[^ding2019]: Cognitive graph for multi-hop reading comprehension at scale
+[^ma2019]: Towards generalizable neuro-symbolic systems for commonsense question answering
+[^lin2019]: Retrieval enhanced model for commonsense generation
+[^zhou2018]: Commonsense knowledge aware conversation generation with graph attention
